@@ -236,6 +236,7 @@
             this.btnFinishers.TabIndex = 2;
             this.btnFinishers.Text = "Finishers";
             this.btnFinishers.UseVisualStyleBackColor = true;
+            this.btnFinishers.Click += new System.EventHandler(this.btnFinishers_Click);
             // 
             // btnRacerList
             // 
@@ -285,6 +286,7 @@
             this.btnClear.TabIndex = 61;
             this.btnClear.Text = "&Clear";
             this.btnClear.UseVisualStyleBackColor = false;
+            this.btnClear.Visible = false;
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
             // txtNotifications

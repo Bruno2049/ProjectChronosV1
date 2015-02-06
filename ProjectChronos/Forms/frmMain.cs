@@ -10,10 +10,15 @@ using System.IO;
 using nsAlienRFID2;
 using System.Collections.Generic;
 
+using ProjectChronos.Models;
+using ProjectChronos.Repositories;
+
 namespace ProjectChronos
 {
     public partial class frmMain : Form
     {
+        private FinishersRepo finishers = new FinishersRepo();
+        private RacersRepo racers = new RacersRepo();
 
         private class MyStoredReaderState
         {
@@ -159,9 +164,38 @@ namespace ProjectChronos
 
                                 DateTime d;
                                 DateTime.TryParse(tag.DiscoveryTime, out d);
-                                string timestamp = Helper.ConvertToUnixTimestamp(d).ToString();
-                                MessageBox.Show(timestamp + " - " + d.ToString("HH:mm:ss.ffff"));
-                                txtNotifications.Text += tag.TagID + " " + tag.DiscoveryTime + "\r\n";
+                                double timestamp = Helper.ConvertToUnixTimestamp(d);
+
+                                Finisher finisher = new Finisher();
+                                Racer racer = racers.findByEpc1(tag.TagID);
+                                if (racer == null)
+                                {
+                                    racer = racers.findByEpc2(tag.TagID);
+                                }
+
+                                if (racer != null)
+                                {
+                                    finisher.racerNo = racer.racerNo;
+                                    finisher.epc = tag.TagID;
+                                    finisher.time = d.ToString("yyyy-MM-dd HH:mm:ss.ffff");
+                                    int result = 0;
+                                    if (finisher.racerNo > 0)
+                                    {
+                                        result = finishers.create(finisher);
+                                    }
+                                    
+                                    if (result > 0)
+                                    {
+                                        txtNotifications.Text += "FINISHER: " + racer.racerName + " : " + tag.TagID + " " + tag.DiscoveryTime + "\r\n";
+                                    }
+                                    else
+                                    {
+                                        txtNotifications.Text += tag.TagID + " " + tag.DiscoveryTime + "\r\n";
+                                    }
+                                }
+
+                                MessageBox.Show(d.ToString("yyyy-MM-dd HH:mm:ss.ffff"));
+                                
                             }
                         }
                     }
@@ -745,6 +779,12 @@ namespace ProjectChronos
         private void btnRacerList_Click(object sender, EventArgs e)
         {
             Forms.frmRacerList frm = new Forms.frmRacerList();
+            frm.Show();
+        }
+
+        private void btnFinishers_Click(object sender, EventArgs e)
+        {
+            Forms.FinisherList frm = new Forms.FinisherList();
             frm.Show();
         }
 

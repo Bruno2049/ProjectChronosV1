@@ -48,5 +48,32 @@ namespace ProjectChronos.Forms
         {
             populateListView();
         }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            frmRacerListForm frm = new frmRacerListForm();
+            if(frm.ShowDialog() == DialogResult.OK)
+            {
+                populateListView();
+            }
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (lstRacers.SelectedItems.Count > 0)
+            {
+                int id = Int32.Parse(lstRacers.SelectedItems[0].Text);
+                int result = racers.delete(id);
+                if (result > 0)
+                {
+                    MessageBox.Show(this, "Racer successfully deleted.", null, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    populateListView();
+                }
+                else
+                {
+                    MessageBox.Show(this, "Error deleting racer", null, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
     }
 }

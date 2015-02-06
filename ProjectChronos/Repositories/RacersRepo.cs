@@ -48,6 +48,71 @@ namespace ProjectChronos.Repositories
             return racers;
         }
 
+        public Racer findByEpc1(string epc)
+        {
+            Racer racer = new Racer();
+            try
+            {
+                using (MySqlConnection con = new MySqlConnection(connectionstring))
+                {
+                    con.Open();
+                    string sql = "SELECT * FROM racers WHERE epc1 = @epc";
+                    MySqlCommand sqlCmd = new MySqlCommand(sql, con);
+
+                    sqlCmd.Parameters.AddWithValue("epc", epc);
+
+                    MySqlDataReader reader = sqlCmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        racer.id = Int32.Parse(reader["id"].ToString());
+                        racer.racerNo = Int32.Parse(reader["racerNo"].ToString());
+                        racer.racerName = reader["racerName"].ToString();
+                        racer.epc1 = reader["epc1"].ToString();
+                        racer.epc2 = reader["epc2"].ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return racer;
+            }
+
+            return racer;
+        }
+
+        public Racer findByEpc2(string epc)
+        {
+            Racer racer = new Racer();
+            try
+            {
+                using (MySqlConnection con = new MySqlConnection(connectionstring))
+                {
+                    con.Open();
+                    string sql = "SELECT * FROM racers WHERE epc2 = @epc";
+                    MySqlCommand sqlCmd = new MySqlCommand(sql, con);
+
+                    sqlCmd.Parameters.AddWithValue("epc", epc);
+
+                    MySqlDataReader reader = sqlCmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        racer.id = Int32.Parse(reader["id"].ToString());
+                        racer.racerNo = Int32.Parse(reader["racerNo"].ToString());
+                        racer.racerName = reader["racerName"].ToString();
+                        racer.epc1 = reader["epc1"].ToString();
+                        racer.epc2 = reader["epc2"].ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return racer;
+            }
+
+            return racer;
+        }
         
         public override int create(Racer racer)
         {

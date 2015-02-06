@@ -70,5 +70,15 @@ namespace ProjectChronos.Properties {
                 this["password"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("server=localhost;user id=root;database=chronos")]
+        public string chronosConnectionString {
+            get {
+                return ((string)(this["chronosConnectionString"]));
+            }
+        }
     }
 }
