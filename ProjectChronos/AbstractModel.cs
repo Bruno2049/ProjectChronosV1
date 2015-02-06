@@ -12,7 +12,7 @@ namespace ProjectChronos
         protected string connectionstring = string.Format("Server={0};Database={1};Uid={2};Pwd={3};", Properties.Settings.Default.host, Properties.Settings.Default.database, Properties.Settings.Default.username, Properties.Settings.Default.password);
 
         abstract public List<T> all();
-        abstract public int create();
+        abstract public int create(T item);
         abstract public int update(int id);
         abstract public int delete(int id);
     }

@@ -11,6 +11,10 @@ namespace ProjectChronos.Repositories
 {
     class RacersRepo : AbstractModel<Racer>
     {
+        /// <summary>
+        /// Get all the list of racers from the database
+        /// </summary>
+        /// <returns>Racer</returns>
         public override List<Racer> all()
         {
             List<Racer> racers = new List<Racer>();
@@ -44,9 +48,34 @@ namespace ProjectChronos.Repositories
             return racers;
         }
 
-        public override int create()
+        
+        public override int create(Racer racer)
         {
-            return 0;
+            int result = 0;
+
+            try
+            {
+                using (MySqlConnection con = new MySqlConnection(connectionstring))
+                {
+                    con.Open();
+                    string sql = "INSERT INTO racers(racerNo, racerName, epc1, epc2) VALUES(@racerNo, @racerName, @epc1, @epc2)";
+                    MySqlCommand sqlCmd = new MySqlCommand(sql, con);
+
+                    sqlCmd.Parameters.AddWithValue("racerNo", racer.racerNo);
+                    sqlCmd.Parameters.AddWithValue("racerName", racer.racerName);
+                    sqlCmd.Parameters.AddWithValue("epc1", racer.epc1);
+                    sqlCmd.Parameters.AddWithValue("epc2", racer.epc2);
+
+                    sqlCmd.ExecuteNonQuery();
+                    result = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                return result;
+            }
+
+            return result;
         }
 
         public override int update(int id)
@@ -56,7 +85,28 @@ namespace ProjectChronos.Repositories
 
         public override int delete(int id)
         {
-            return 0;
+            int result = 0;
+
+            try
+            {
+                using (MySqlConnection con = new MySqlConnection(connectionstring))
+                {
+                    con.Open();
+                    string sql = "DELETE FROM racers WHERE id = @id";
+                    MySqlCommand sqlCmd = new MySqlCommand(sql, con);
+
+                    sqlCmd.Parameters.AddWithValue("id", id);
+
+                    sqlCmd.ExecuteNonQuery();
+                    result = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                return result;
+            }
+
+            return result;
         }
     }
 }
